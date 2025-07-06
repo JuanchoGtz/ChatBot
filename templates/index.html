@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Productos disponibles</h1>
+
+<div class="products-container">
+  {% for product in products %}
+    {% set img_number = loop.index %}
+    {% if product.type == 'computer' %}
+      {% set folder = 'computers' %}
+    {% else %}
+      {% set folder = 'accessories' %}
+    {% endif %}
+    <div class="product-card">
+      <img src="/static/images/{{ folder }}/{{ img_number }}.jpg" alt="Producto {{ product.name }}">
+      <h3>{{ product.name }}</h3>
+      <p><b>Tipo:</b> {{ product.type }}</p>
+      <p>{{ product.description }}</p>
+      <p><b>Precio:</b> ${{ product.price }}</p>
+      {% if product.type == 'computer' %}
+        <p><b>CPU:</b> {{ product.cpu }}</p>
+        <p><b>RAM:</b> {{ product.ram }}</p>
+        <p><b>Almacenamiento:</b> {{ product.storage }}</p>
+        <p><b>GPU:</b> {{ product.gpu }}</p>
+        <p><b>OS:</b> {{ product.os }}</p>
+        <p><b>Puertos:</b> {{ product.ports }}</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+    body{
+        color: white;
+    }
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-card {
+  border-radius: 10px;
+  width: 250px;
+  padding: 15px;
+  text-align: center;
+  align-items: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+</style>
+
+{% endblock %}

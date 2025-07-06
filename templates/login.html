@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Login Admin</h2>
+<div class="container">
+<div class="form_container">
+<form method="post">
+    <input type="text" name="username" placeholder="Usuario"><br>
+    <input type="password" name="password" placeholder="Contraseña"><br>
+    <button type="submit">Login</button>
+</form>
+</div>
+</div>
+<style>
+    *{
+        color: white;
+    }
+    .container{
+        display: flex;
+      justify-content: center; 
+      align-items: center;
+    }
+    .form_container{
+        border-radius: 9px;
+        width: 350px;
+        height: 500px;
+        display: flex;
+       justify-content: center; 
+       align-items: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+    .form_container input{
+    margin: 10px 0;
+    height:35px;  
+    width: 270px; 
+    background: transparent;   
+    border: 1px solid rgba(255, 255, 255, 0.5); 
+    border-radius: 10px;      
+    }
+    .form_container button{
+    margin-top: 20px;
+    height: 30px;
+    width: 270px;  
+    color: #1d1d1d;
+    background: #96fffb;
+    border-radius: 10px;
+    border: transparent;
+    cursor: pointer;
+    }
+    .form_container button:hover{
+        transition: 0.5s;
+        transform: scale(1.05);
+        background: #64aeac;
+    }
+    
+    
+</style>
+{% endblock %}

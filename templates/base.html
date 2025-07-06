@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tienda</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+  
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           background: #1d1d1d;
+        }
+        nav{
+            text-align: center;
+            
+        }
+        nav a{
+            text-decoration: none;
+            color: white;
+            font-size: 19px;
+            margin: 10px;
+        }
+        nav a:hover{
+            transition: 0.5s;
+            color: #66fffa;
+        }
+        nav ion-icon {
+            font-size: 24px;
+            margin-left: 19px;
+            cursor: pointer;
+        }
+        .chatbot-input {
+  display: flex;
+  border-top: 1px solid #333;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.chatbot-input button {
+  background: #96fffb;
+  color: #1d1d1d;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+#chatbot-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #96fffb;
+    color: #1d1d1d;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+  }
+
+  #chatbot-button:hover {
+    transform: scale(1.1);
+  }
+
+
+  #chatbot-window {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 300px;
+    height: 400px;
+    background: #1d1d1d;
+    color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    display: none; 
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .chatbot-header {
+    background: #96fffb;
+    color: #1d1d1d;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-body {
+    padding: 15px;
+    flex: 1;
+     display: flex;
+  flex-direction: column;
+  overflow-y: auto; 
+  }
+
+  .chatbot-header button {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .message {
+  max-width: 80%;
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 15px;
+  word-wrap: break-word;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: #96fffb;
+  color: #1d1d1d;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #1d1d1d;
+}
+    
+#chatbot-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+  gap: 5px;
+  background: #1d1d1d;
+}
+
+#chatbot-suggestions button {
+  background: #96fffb;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #1d1d1d;
+}
+
+#chatbot-suggestions button:hover {
+  background: #64aeac;
+}
+    </style>
+</head>
+<body>
+    <nav>
+        
+        <a href="/">Home</a>
+        <a href="/login">Admin Login</a>
+        <a href="/logout">Logout</a>
+        <ion-icon name="logo-facebook"></ion-icon>
+        <ion-icon name="logo-instagram"></ion-icon>
+        
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+    <div id="chatbot-button">
+        💬
+    </div>
+    <!-- Ventana del chatbot oculta -->
+    <div id="chatbot-window">
+       
+      <div class="chatbot-header">
+        <h4>Chatbot</h4>
+        <button id="close-chatbot">×</button>
+        
+      </div>
+      <div class="chatbot-body" id="chatbot-body">
+        <div id="chatbot-suggestions">
+          <button onclick="setExample('¿Cuántas computadoras tienen disponibles?')">Disponibles</button>
+        <button onclick="setExample('Muéstrame las PCs con 16GB de RAM')">16GB RAM</button>
+        <button onclick="setExample('¿Qué accesorios hay?')">Accesorios</button>
+      </div>
+        <!-- Mensajes se insertan aquí -->
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbot-input" placeholder="Escribe tu mensaje...">
+        <button id="send-chatbot">Enviar</button>
+      </div>
+    </div>
+
+
+<script>
+  const chatbotButton = document.getElementById('chatbot-button');
+  const chatbotWindow = document.getElementById('chatbot-window');
+  const closeButton = document.getElementById('close-chatbot');
+  const sendButton = document.getElementById('send-chatbot');
+  const inputField = document.getElementById('chatbot-input');
+  const chatbotBody = document.getElementById('chatbot-body');
+
+  chatbotButton.onclick = () => {
+    chatbotWindow.style.display = 'flex';
+  };
+  closeButton.onclick = () => {
+    chatbotWindow.style.display = 'none';
+  };
+
+  sendButton.onclick = sendMessage;
+
+  function addMessage(text, type) {
+    const msg = document.createElement('div');
+    msg.className = `message ${type}`;
+    msg.textContent = text;
+    chatbotBody.appendChild(msg);
+    chatbotBody.scrollTop = chatbotBody.scrollHeight; // Auto-scroll
+  }
+
+  async function sendMessage() {
+    const text = inputField.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user-message');
+    inputField.value = '';
+
+    // Puedes mostrar "..." mientras carga
+    const loading = document.createElement('div');
+    loading.className = 'message bot-message';
+    loading.textContent = '...';
+    chatbotBody.appendChild(loading);
+    chatbotBody.scrollTop = chatbotBody.scrollHeight;
+
+    // Llamada a tu backend
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+
+    loading.remove(); // Borra "..."
+    addMessage(data.response, 'bot-message');
+  }
+
+  function setExample(text) {
+    inputField.value = text;
+    inputField.focus();
+  }
+</script>
+
+</body>
+</html>

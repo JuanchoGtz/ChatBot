@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Agregar Producto</h2>
+<div class="container">
+<div class="form_container">
+<form method="post">
+    <label>Tipo:</label>
+    <select name="type" id="type" onchange="toggleFields()">
+        <option value="accessory">Accesorio</option>
+        <option value="computer">Computadora</option>
+    </select><br><br>
+
+    <label>Nombre:</label><br>
+    <input type="text" name="name" ><br>
+
+    <label>Descripción:</label><br>
+    <input type="text" name="description" ><br>
+
+    <label>Precio:</label><br>
+    <input type="number" step="0.01" name="price" ><br>
+
+    <div id="computerFields" style="display:none;">
+        <label>Procesador (CPU):</label><br>
+        <input type="text" name="cpu"><br>
+
+        <label>Memoria RAM:</label><br>
+        <input type="text" name="ram"><br>
+
+        <label>Almacenamiento:</label><br>
+        <input type="text" name="storage"><br>
+
+        <label>Tarjeta Gráfica (GPU):</label><br>
+        <input type="text" name="gpu"><br>
+
+        <label>Sistema Operativo:</label><br>
+        <input type="text" name="os"><br>
+
+        <label>Puertos/Conectores:</label><br>
+        <input type="text" name="ports"><br>
+    </div>
+
+    <br>
+    <button type="submit">Agregar</button>
+</form>
+</div>
+</div>
+<script>
+function toggleFields() {
+    const type = document.getElementById('type').value;
+    const computerFields = document.getElementById('computerFields');
+    if (type === 'computer') {
+        computerFields.style.display = 'block';
+    } else {
+        computerFields.style.display = 'none';
+    }
+}
+</script>
+<style>
+    body{
+        color: white;
+    }
+    .container{
+        display: flex;
+      justify-content: center; 
+      align-items: center;
+    }
+    .form_container{
+        border-radius: 9px;
+        width: 350px;
+        height: 500px;
+        display: flex;
+       justify-content: center; 
+       align-items: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+    .form_container input{
+    background: transparent;   
+    border: 1px solid rgba(255, 255, 255, 0.5); 
+    border-radius: 8px;
+    width: 270px;
+    color: white;
+    }
+    .form_container button{
+    margin-top: 20px;
+    height: 30px;
+    width: 270px;  
+    color: #1d1d1d;
+    background: #96fffb;
+    border-radius: 10px;
+    border: transparent;
+    cursor: pointer;
+    }
+</style>
+{% endblock %}
+
